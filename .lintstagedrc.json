@@ -1,6 +1,7 @@
 {
   "*.ts": [
     "eslint 'src/**' --fix",
+    "echo run husky",
     "npm run test:staged",
     "git add"
   ]
