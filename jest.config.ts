@@ -1,5 +1,3 @@
-import { builtinModules } from "module"
-
 module.exports = {
 //  clearMocks: true,
 //  collectCoverage: true,
@@ -10,6 +8,7 @@ module.exports = {
     '<rootDir>/src'
   ],
   testEnvironment: 'node',
+  preset: '@shelf/jest-mongodb',
   transform: {
     '.+\\.ts$': 'ts-jest'
   }
