@@ -1,5 +1,5 @@
+globalConfig.json
 .vscode
 node_modules
 dist
 coverage
-./globalConfig.json
