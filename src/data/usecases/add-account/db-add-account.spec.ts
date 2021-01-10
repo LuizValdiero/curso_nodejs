@@ -1,15 +1,28 @@
 import { Encrypter } from '../../protocols/encrypter'
 import { DbAddAccount } from './db-add-account'
 
+interface SutTypes {
+  sut: DbAddAccount
+  encryptStub: Encrypter
+}
+
+const makeSut = (): SutTypes => {
+  class EncrypterStub implements Encrypter {
+    async encrypt (value: string): Promise<string> {
+      return await new Promise(resolve => resolve('hashed_password'))
+    }
+  }
+  const encryptStub = new EncrypterStub()
+  const sut = new DbAddAccount(encryptStub)
+  return {
+    sut,
+    encryptStub
+  }
+}
+
 describe('DBAddAccount Usecase', () => {
   test('Should call Encrypter with correct password', async () => {
-    class EncrypterStub implements Encrypter {
-      async encrypt (value: string): Promise<string> {
-        return await new Promise(resolve => resolve('hashed_password'))
-      }
-    }
-    const encryptStub = new EncrypterStub()
-    const sut = new DbAddAccount(encryptStub)
+    const { sut, encryptStub } = makeSut()
     const encryptSpy = jest.spyOn(encryptStub, 'encrypt')
     const accountData = {
       name: 'valid_name',
