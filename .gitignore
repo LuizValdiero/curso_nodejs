@@ -1,4 +1,5 @@
 globalConfig.json
+src/main/config/mongodbAtlas.ts
 .vscode
 node_modules
 dist

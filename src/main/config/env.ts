@@ -1,4 +1,5 @@
+import mongodbAtlas from './mongodbAtlas'
 export default {
-  mongoUrl: process.env.MONGO_URL || 'mongodb://localhost:27017clean-node-api',
+  mongoUrl: process.env.MONGO_URL || mongodbAtlas(),
   port: process.env.PORT || 5050
 }
