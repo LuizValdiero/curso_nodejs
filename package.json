@@ -3,6 +3,10 @@
   "version": "1.1.0",
   "description": "Curso do Manguinho na Udemy: NodeJs, Typescript, TDD, Clean Architecture e SOLID",
   "main": "index.js",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
   "scripts": {
     "start": "node dist/main/server.js",
     "build": "rimraf dist && tsc",
