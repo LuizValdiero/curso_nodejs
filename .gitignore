@@ -4,3 +4,4 @@ src/main/config/mongodbAtlas.ts
 node_modules
 dist
 coverage
+data
