@@ -1,4 +1,4 @@
-import { AccountModel, AddAccount, AddAccountModel, Validation } from './signup-controller-protocols'
+import { AccountModel, AddAccount, AddAccountModel, Authentication, AuthenticationModel, Validation } from './signup-controller-protocols'
 import { MissingParamError, ServerError } from '../../errors'
 import { SignUpController } from './signup-controller'
 import { HttpRequest } from '../../protocols'
@@ -11,6 +11,15 @@ const makeAddAccount = (): AddAccount => {
     }
   }
   return new AddAccountStub()
+}
+
+const makeAuthentication = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async auth (authentication: AuthenticationModel): Promise<string> {
+      return 'any_token'
+    }
+  }
+  return new AuthenticationStub()
 }
 
 const makeValidation = (): Validation => {
@@ -41,16 +50,19 @@ const makeFakeAccount = (): AccountModel => ({
 interface SutTypes {
   sut: SignUpController
   addAccountStub: AddAccount
+  authenticationStub: Authentication
   validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const addAccountStub = makeAddAccount()
+  const authenticationStub = makeAuthentication()
   const validationStub = makeValidation()
-  const sut = new SignUpController(addAccountStub, validationStub)
+  const sut = new SignUpController(addAccountStub, authenticationStub, validationStub)
   return {
     sut,
     addAccountStub,
+    authenticationStub,
     validationStub
   }
 }
@@ -93,5 +105,14 @@ describe('SignUp Controller', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('any_error'))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new MissingParamError('any_error')))
+  })
+
+  test('Should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut()
+    const authSpy = jest.spyOn(authenticationStub, 'auth')
+    await sut.handle(makeFakeRequest())
+    expect(authSpy).toBeCalledWith({
+      email: 'any_email@mail.com', password: 'any_password'
+    })
   })
 })
