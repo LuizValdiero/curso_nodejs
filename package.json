@@ -1,6 +1,6 @@
 {
   "name": "curso_nodejs",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Curso do Manguinho na Udemy: NodeJs, Typescript, TDD, Clean Architecture e SOLID",
   "main": "index.js",
   "engines": {
